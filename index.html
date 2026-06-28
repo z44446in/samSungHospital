@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>삼성서울병원 1차면접 회복 차트 · D-day 7/10</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+  :root{
+    --paper:#F5F8F6;
+    --surface:#FFFFFF;
+    --mint:#E6F2EC;
+    --mint-deep:#D2E8DE;
+    --green:#1B6B57;        /* primary deep eucalyptus green (초록이) */
+    --green-bright:#2E9E80;
+    --ink:#15241F;
+    --muted:#5E726B;
+    --line:#DCE7E2;
+    --amber:#E0853A;        /* today */
+    --coral:#E0573F;        /* d-day / urgent */
+    --done:#9FB8AE;
+    --shadow:0 1px 2px rgba(21,36,31,.05),0 8px 24px -12px rgba(21,36,31,.18);
+    --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+    --sans:'Pretendard',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;font-family:var(--sans);color:var(--ink);
+    background:var(--paper);line-height:1.6;
+    -webkit-font-smoothing:antialiased;padding-bottom:80px;
+  }
+  a{color:var(--green);}
+
+  /* ---------- Monitor header (signature) ---------- */
+  .monitor{
+    position:sticky;top:0;z-index:50;
+    background:var(--ink);color:#EAF4EF;
+    border-bottom:1px solid #0d1714;
+  }
+  .monitor-inner{
+    max-width:880px;margin:0 auto;padding:14px 20px 0;
+    display:flex;flex-wrap:wrap;align-items:flex-end;gap:14px 24px;
+  }
+  .mon-block .lab{
+    font-family:var(--mono);font-size:10px;letter-spacing:.18em;
+    text-transform:uppercase;color:#7FB4A2;margin:0 0 2px;
+  }
+  .dday{display:flex;align-items:baseline;gap:8px;}
+  .dday .num{font-family:var(--mono);font-weight:700;font-size:34px;line-height:1;color:#fff;}
+  .dday .clock{font-family:var(--mono);font-size:13px;color:#A9CFC2;}
+  .vital{flex:1;min-width:180px;}
+  .vital .row{display:flex;justify-content:space-between;align-items:baseline;}
+  .vital .pct{font-family:var(--mono);font-weight:700;font-size:22px;color:var(--green-bright);}
+  .bar{height:7px;border-radius:99px;background:#243b34;overflow:hidden;margin-top:6px;}
+  .bar > i{display:block;height:100%;width:0;border-radius:99px;
+    background:linear-gradient(90deg,var(--green-bright),#7FE0C2);transition:width .5s ease;}
+  .ekg{display:block;width:100%;height:30px;margin-top:8px;}
+  .ekg path{fill:none;stroke:var(--green-bright);stroke-width:2;opacity:.85;
+    stroke-dasharray:1200;stroke-dashoffset:1200;animation:sweep 4s linear infinite;}
+  @keyframes sweep{to{stroke-dashoffset:0;}}
+
+  /* ---------- Layout ---------- */
+  .wrap{max-width:880px;margin:0 auto;padding:24px 20px 0;}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--green);margin:0;}
+  h1{font-size:26px;font-weight:800;margin:6px 0 4px;letter-spacing:-.01em;}
+  .sub{color:var(--muted);margin:0 0 22px;font-size:14.5px;}
+
+  .toolbar{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 24px;}
+  .btn{font-family:var(--sans);font-size:13px;font-weight:600;cursor:pointer;
+    border:1px solid var(--line);background:var(--surface);color:var(--ink);
+    padding:9px 14px;border-radius:10px;transition:.15s;}
+  .btn:hover{border-color:var(--green);color:var(--green);}
+  .btn.ghost{background:transparent;}
+  .btn:focus-visible{outline:2px solid var(--green);outline-offset:2px;}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;
+    padding:18px 20px;margin-bottom:16px;box-shadow:var(--shadow);}
+  .panel h2{font-size:15px;margin:0 0 12px;display:flex;align-items:center;gap:8px;}
+  .panel h2 .tick{font-family:var(--mono);font-size:11px;color:var(--green);
+    background:var(--mint);border-radius:6px;padding:2px 7px;}
+  .prio{margin:0;padding:0;list-style:none;display:grid;gap:8px;}
+  .prio li{display:flex;gap:10px;align-items:baseline;font-size:14px;}
+  .prio b{font-family:var(--mono);color:#fff;background:var(--green);border-radius:6px;
+    padding:1px 7px;font-size:11px;flex:none;}
+  .rules{margin:0;padding-left:18px;color:var(--ink);font-size:13.5px;display:grid;gap:6px;}
+  .rules li::marker{color:var(--green-bright);}
+  .cut{font-size:13.5px;color:var(--muted);margin:6px 0 0;}
+  .cut b{color:var(--coral);}
+
+  /* deliverables */
+  .deliv{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:4px;}
+  .chip{display:flex;align-items:center;gap:10px;border:1px solid var(--line);
+    border-radius:12px;padding:11px 13px;cursor:pointer;transition:.15s;font-size:14px;}
+  .chip:hover{border-color:var(--green-bright);background:var(--mint);}
+  .chip.on{background:var(--mint);border-color:var(--green-bright);}
+  .chip .num{font-family:var(--mono);font-size:11px;color:var(--green);flex:none;}
+
+  /* ---------- Day cards ---------- */
+  .day{background:var(--surface);border:1px solid var(--line);border-radius:16px;
+    margin-bottom:14px;box-shadow:var(--shadow);overflow:hidden;
+    border-left:4px solid var(--line);transition:border-color .2s;}
+  .day.today{border-left-color:var(--amber);}
+  .day.dday{border-left-color:var(--coral);}
+  .day.past{opacity:.72;}
+  .day-head{display:flex;align-items:center;gap:14px;padding:15px 18px;cursor:pointer;
+    user-select:none;}
+  .day-head:focus-visible{outline:2px solid var(--green);outline-offset:-2px;}
+  .date{font-family:var(--mono);font-weight:700;font-size:15px;flex:none;min-width:74px;}
+  .date small{display:block;font-weight:400;font-size:11px;color:var(--muted);}
+  .day-title{flex:1;font-weight:700;font-size:15px;letter-spacing:-.01em;}
+  .day-title span{display:block;font-weight:400;font-size:12.5px;color:var(--muted);margin-top:1px;}
+  .tag{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+    padding:3px 8px;border-radius:7px;background:var(--mint);color:var(--green);flex:none;}
+  .tag.t-today{background:#FBEBD9;color:var(--amber);}
+  .tag.t-dday{background:#FBE0DA;color:var(--coral);}
+  .ring{font-family:var(--mono);font-size:12px;color:var(--muted);flex:none;min-width:42px;text-align:right;}
+  .caret{flex:none;color:var(--muted);transition:transform .2s;font-size:12px;}
+  .day.collapsed .caret{transform:rotate(-90deg);}
+  .day.collapsed .day-body{display:none;}
+
+  .day-body{padding:2px 18px 16px;}
+  .blockgrp{margin-top:10px;}
+  .blockgrp .gh{font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+    color:var(--green);text-transform:uppercase;margin:0 0 4px;display:flex;align-items:center;gap:8px;}
+  .blockgrp .gh::before{content:"";height:1px;width:14px;background:var(--green-bright);}
+  .task{display:flex;gap:11px;align-items:flex-start;padding:8px 10px;border-radius:10px;
+    cursor:pointer;transition:background .12s;}
+  .task:hover{background:var(--mint);}
+  .task input{appearance:none;-webkit-appearance:none;margin:3px 0 0;flex:none;
+    width:19px;height:19px;border:2px solid var(--mint-deep);border-radius:6px;
+    cursor:pointer;position:relative;transition:.15s;background:#fff;}
+  .task input:hover{border-color:var(--green-bright);}
+  .task input:checked{background:var(--green);border-color:var(--green);}
+  .task input:checked::after{content:"";position:absolute;left:5px;top:1px;width:5px;height:10px;
+    border:solid #fff;border-width:0 2px 2px 0;transform:rotate(42deg);}
+  .task input:focus-visible{outline:2px solid var(--green);outline-offset:2px;}
+  .task .txt{font-size:14px;}
+  .task .min{font-family:var(--mono);font-size:11px;color:var(--muted);}
+  .task.done .txt{color:var(--done);text-decoration:line-through;}
+
+  footer{max-width:880px;margin:30px auto 0;padding:0 20px;color:var(--muted);font-size:12.5px;}
+  .save-note{background:var(--mint);border:1px solid var(--mint-deep);border-radius:12px;
+    padding:12px 14px;font-size:13px;color:var(--green);margin-bottom:16px;}
+
+  @media (max-width:560px){
+    .dday .num{font-size:28px;}
+    h1{font-size:22px;}
+    .date{min-width:64px;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .ekg path{animation:none;stroke-dashoffset:0;}
+    html{scroll-behavior:auto;}
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<header class="monitor">
+  <div class="monitor-inner">
+    <div class="mon-block dday-wrap">
+      <p class="lab">D-day · 7/10(금) 14:00</p>
+      <div class="dday"><span class="num" id="ddayNum">D-–</span><span class="clock" id="ddayClock">--:--:--</span></div>
+    </div>
+    <div class="vital">
+      <div class="row"><span class="lab">전체 진행률 (vital)</span><span class="pct" id="pct">0%</span></div>
+      <div class="bar"><i id="barFill"></i></div>
+    </div>
+  </div>
+  <svg class="ekg" viewBox="0 0 1200 30" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0,15 L300,15 L320,15 L330,4 L345,26 L360,15 L400,15 L600,15 L620,15 L630,4 L645,26 L660,15 L700,15 L900,15 L920,15 L930,4 L945,26 L960,15 L1000,15 L1200,15"/>
+  </svg>
+</header>
+
+<main class="wrap">
+  <p class="eyebrow">Samsung Medical Center · 1차 면접 회복 차트</p>
+  <h1>퇴원(합격)까지 13일, 매일 바이탈 올리기</h1>
+  <p class="sub">직무(case) 면접 + 인성 면접 동시 대비. 체크할수록 위 진행률이 차오릅니다. 목표는 100% 완벽이 아니라 <b>우선순위대로 반복 회전</b>.</p>
+
+  <div class="save-note" id="saveNote">
+    ✓ 체크 기록은 <b>이 브라우저에 자동 저장</b>됩니다(localStorage). GitHub Pages에 올리거나 파일을 직접 열면 그대로 유지돼요. 단, 다른 기기·시크릿창에선 별도로 저장됩니다.
+  </div>
+
+  <div class="toolbar">
+    <button class="btn" id="goToday">▸ 오늘로 이동</button>
+    <button class="btn ghost" id="expandAll">전체 펼치기</button>
+    <button class="btn ghost" id="collapseAll">전체 접기</button>
+    <button class="btn ghost" id="resetBtn">기록 초기화</button>
+  </div>
+
+  <section class="panel">
+    <h2>우선순위 <span class="tick">버리지 말 것: 초록이 약점 · 자기소개 · 경험표 · 컴플레인 공식</span></h2>
+    <ul class="prio">
+      <li><b>P1</b><span><b>초록이 암기</b> — 성인간호 후반(소화기계~) + 상황면접 + 인성면접. <i>case 근거와 직결</i>되므로 가장 먼저.</span></li>
+      <li><b>P2</b><span><b>인성 패키지</b> — 1분 자기소개(지원동기)·마지막 할말·경험표·자소서 꼬리질문·<b>인적성300(인성 기출)</b>. 삼성이 진위 검증 꼬리질문을 제일 많이 파는 영역.</span></li>
+      <li><b>P3</b><span><b>case</b> — 패턴 마스터 + 답안뱅크. 15 → 24 → 널스피팅 → 아산 → 52 순, 겹치면 스킵, 근거는 초록이/검색.</span></li>
+      <li><b>P4</b><span><b>삼성병원 분석</b> — "왜 삼성 / 왜 이 병원" 대비.</span></li>
+    </ul>
+  </section>
+
+  <section class="panel">
+    <h2>산출물 6종 <span class="tick" id="delivCount">0 / 6</span></h2>
+    <div class="deliv" id="delivGrid"></div>
+  </section>
+
+  <section class="panel">
+    <h2>ADHD 운영 규칙</h2>
+    <ul class="rules">
+      <li>한 블록 <b>25~50분 + 휴식 5~10분</b>(포모도로). 하루에 <b>암기·케이스·인성 3종을 섞어서</b> 지루함 차단.</li>
+      <li>암기는 '읽기' 금지 → <b>백지 인출</b>(수첩/책 덮고 써보기)로만 확인.</li>
+      <li>매일 끝에 <b>"내일 첫 블록"만</b> 정해두기 → 시작 마찰 제거.</li>
+      <li><b>case 30분 룰</b>: 근거 못 찾으면 표시만 하고 넘어가서 나중에 모아 해결(완벽주의로 멈추지 말 것).</li>
+      <li>case 효율화: <b>case15를 정답키/템플릿</b>으로 삼고, 다음 자료부턴 <b>새 진단/중재만</b> 답안뱅크에 추가.</li>
+    </ul>
+    <p class="cut">시간 부족 시 버리는 순서(뒤에서): 삼성case52 → 서울아산 일부 → 널스피팅 일부. <b>초록이 약점·1분 자기소개·경험표·컴플레인 공식은 절대 사수.</b></p>
+  </section>
+
+  <section id="days"></section>
+</main>
+
+<footer>
+  <p>📌 수첩(카드) 암기는 실습 낮시간이 있는 <b>월·화·수</b>에만 가능 → 카드 제작은 그 전날 저녁(6/28·6/29·6/30)까지만. 7/1 수요일 저녁부터는 초록이 직접 정독으로 전환.</p>
+  <p>가정: 풀데이 8~10h(휴식 포함)·실습/봉사 저녁 약 4h·수면 7~8h. 무리면 블록을 빼되 P1·P2 우선.</p>
+</footer>
+
+<script>
+const TARGET = new Date(2026,6,10,14,0,0); // 2026-07-10 14:00 local
+
+const DELIVERABLES = [
+  "암기수첩 (실습용 카드)",
+  "경험표 (일시/상황/내역할/느낀점/키워드)",
+  "1분 자기소개 + 마지막 할말",
+  "자소서 꼬리질문 Q&A",
+  "case 답안뱅크",
+  "삼성병원 분석 1장"
+];
+
+const DAYS = [
+  {date:"2026-06-28",wd:"일",tag:"셋업",title:"셋업 데이",note:"오늘 저녁 ~4h · 실습 3일을 위한 무기 세팅",
+   groups:[{h:"저녁",tasks:[
+     {t:"암기수첩 Batch A(소화기계) 카드 제작 → 내일 낮 암기용",m:"90"},
+     {t:"경험표 양식 만들고 경험 10개 brain-dump (씨앗만)",m:"60"},
+     {t:"삼성case15 1~5번 정독 — 요약→진단→중재→컴플레인 멘트 구조 체득",m:"60"},
+     {t:"내일 첫 블록 정해두기",m:"5"},
+   ]}]},
+
+  {date:"2026-06-29",wd:"월",tag:"실습일",title:"실습 08–16 · 저녁 ~4h",note:"낮엔 수첩만",
+   groups:[
+     {h:"낮 · 수첩",tasks:[{t:"소화기계 카드 회전 암기",m:""}]},
+     {h:"저녁",tasks:[
+       {t:"암기수첩 Batch B(간담췌·혈액) 카드 제작 → 내일 낮 암기용",m:"75"},
+       {t:"삼성case15 6~10번 + 컴플레인 멘트만 따로 모으기",m:"60"},
+       {t:"1분 자기소개(지원동기) 초안 작성",m:"45"},
+     ]}]},
+
+  {date:"2026-06-30",wd:"화",tag:"실습일",title:"실습 08–16 · 저녁 ~4h",note:"낮엔 수첩만",
+   groups:[
+     {h:"낮 · 수첩",tasks:[{t:"간담췌·혈액 카드 회전 암기",m:""}]},
+     {h:"저녁",tasks:[
+       {t:"암기수첩 Batch C(내분비·신장비뇨) 카드 제작 → 내일 낮 암기용",m:"75"},
+       {t:"삼성case15 11~15번 마무리",m:"60"},
+       {t:"경험 10개 → 경험표 정식 기입 + 키워드 달기",m:"45"},
+     ]}]},
+
+  {date:"2026-07-01",wd:"수",tag:"실습일",title:"실습 08–16 · 저녁 ~4h",note:"카드화는 오늘까지 끝, 저녁부턴 직접 정독",
+   groups:[
+     {h:"낮 · 수첩",tasks:[{t:"내분비·신장 카드 회전 암기",m:""}]},
+     {h:"저녁 (카드화 X)",tasks:[
+       {t:"초록이 근골격·신경·감각·응급 직접 정독 + 백지인출 → 성인 후반 1회독 완료",m:"90"},
+       {t:"자소서 정독 → 항목별 예상 꼬리질문 뽑기(진위검증형)",m:"60"},
+     ]}]},
+
+  {date:"2026-07-02",wd:"목",tag:"풀데이",title:"첫 풀데이 ~9h",note:"실습 끝 — 본격 시작",
+   groups:[{h:"블록",tasks:[
+     {t:"초록이 성인 후반 전체 백지 복습, 약점 표시",m:"90"},
+     {t:"초록이 상황면접 정독 + 컴플레인 대응 공식화(낙상/처치지연/설명부족 등)",m:"90"},
+     {t:"삼성case24 1~8번 — 답 찾기 + 근거 확인(겹치면 표시)",m:"120"},
+     {t:"인적성300 1~100 훑고 경험표로 답 가능 문항 체크",m:"90"},
+     {t:"자소서 꼬리질문 답변 작성 + 소리내어",m:"60"},
+   ]}]},
+
+  {date:"2026-07-03",wd:"금",tag:"봉사+병원",title:"봉사 10–13 · 병원 14:00 · 저녁 ~5h",note:"늦은 오후~저녁만",
+   groups:[{h:"저녁",tasks:[
+     {t:"초록이 인성면접 정독 + 빈출질문 ↔ 내 경험 매칭",m:"90"},
+     {t:"삼성case24 9~16번 (근거 확인)",m:"90"},
+     {t:"인적성300 101~200",m:"60"},
+     {t:"부정 키워드 경험 준비: 실패/거짓말/슬픔/갈등 (삼성 단골)",m:"45"},
+   ]}]},
+
+  {date:"2026-07-04",wd:"토",tag:"풀데이",title:"풀데이 ~9h",note:"case 본격 누적",
+   groups:[{h:"블록",tasks:[
+     {t:"초록이 상황면접 백지복습 + 컴플레인 공식 암기",m:"60"},
+     {t:"삼성case24 17~24번 마무리",m:"90"},
+     {t:"널스피팅 앞 1/3 — 새 진단/중재만 답안뱅크에 추가",m:"120"},
+     {t:"1분 자기소개 + 마지막 할말 완성 → 녹음해서 듣기",m:"60"},
+     {t:"삼성병원 분석 착수(특징·비전·인재상·최신 이슈 검색·정리)",m:"60"},
+   ]}]},
+
+  {date:"2026-07-05",wd:"일",tag:"풀데이",title:"풀데이 ~9h",note:"case 폭 넓히기 + 모의 시작",
+   groups:[{h:"블록",tasks:[
+     {t:"초록이 성인 약점 파트 집중 재암기",m:"60"},
+     {t:"널스피팅 중간 1/3",m:"120"},
+     {t:"서울아산 족보 26p (새 유형만 빠르게)",m:"75"},
+     {t:"인적성300 201~300 마무리",m:"60"},
+     {t:"모의 case 2세트(5분 작성→3분 발표→셀프 꼬리 5개)",m:"90"},
+   ]}]},
+
+  {date:"2026-07-06",wd:"월",tag:"풀데이",title:"풀데이 ~9h",note:"case 답안뱅크 완성 + 병원분석",
+   groups:[{h:"블록",tasks:[
+     {t:"널스피팅 마지막 1/3",m:"120"},
+     {t:"삼성case52 압축본 — 겹치면 스킵, 새 케이스만 답안뱅크",m:"90"},
+     {t:"컴플레인 공식 → 실제 case에 적용 드릴",m:"60"},
+     {t:"삼성병원 분석 완성 + '왜 삼성/왜 이 병원' 답변화",m:"60"},
+     {t:"인성 빈출 TOP 질문 경험 매칭 점검",m:"60"},
+   ]}]},
+
+  {date:"2026-07-07",wd:"화",tag:"풀데이",title:"풀데이 ~9h · 인성 집중",note:"검증 꼬리질문 압박 연습",
+   groups:[{h:"블록",tasks:[
+     {t:"인성 모의: 무작위 질문 15개 즉답 + 꼬리질문 녹음",m:"120"},
+     {t:"자소서 꼬리질문 진위검증 압박 연습",m:"90"},
+     {t:"경험표 최종 정리(키워드별 1경험 빠르게 인출)",m:"60"},
+     {t:"초록이 약점 카드 회전",m:"60"},
+     {t:"자기소개/마지막할말/지원동기 입에 붙이기",m:"60"},
+   ]}]},
+
+  {date:"2026-07-08",wd:"수",tag:"풀데이",title:"풀데이 ~9h · 통합 리허설",note:"실전처럼 타이머 켜고",
+   groups:[{h:"블록",tasks:[
+     {t:"case 실전 모의 4세트(타이머 5분작성→3분발표→꼬리 5)",m:"120"},
+     {t:"인성 실전 모의 12문항 압박(꼬리 포함)",m:"90"},
+     {t:"답안뱅크 + 컴플레인 공식 빠른 회전",m:"60"},
+     {t:"자기소개·마지막할말 최종 녹음 점검",m:"45"},
+     {t:"약점만 마지막 보강",m:"60"},
+   ]}]},
+
+  {date:"2026-07-09",wd:"목",tag:"풀데이",title:"D-1 ~6h · 일찍 취침",note:"새 내용 금지, 회전만",
+   groups:[{h:"블록",tasks:[
+     {t:"오전: case 답안뱅크 + 컴플레인 공식 빠른 회전",m:"120"},
+     {t:"오후: 인성 핵심(자기소개·경험 TOP 키워드·자소서 꼬리답) 소리내어 1회전 + 삼성병원 분석 훑기",m:"120"},
+     {t:"저녁: 약점 카드만. 새 내용 X. 23시 전 취침",m:"60"},
+   ]}]},
+
+  {date:"2026-07-10",wd:"금",tag:"D-DAY",title:"🎬 면접 14:00",note:"환자안전·근거·컴플레인 공감",
+   groups:[{h:"D-DAY",tasks:[
+     {t:"오전(~3h): 수첩 + 자기소개 + 컴플레인 공식만 가볍게(새 거 X)",m:""},
+     {t:"점심 가볍게 → 12:30 이동",m:""},
+     {t:"대기 중: 1분 자기소개 + '왜 삼성' 한 번씩 속으로",m:""},
+     {t:"마인드셋: 정답 맞히기 아님 → 환자안전 우선순위 + 근거 + 컴플레인 공감·해결. 모르면 솔직히 + '확인 후 조치/보고' + 환자안전 먼저.",m:""},
+   ]}]},
+];
+
+/* ---------- state ---------- */
+const KEY="samsung-prep-v1";
+let state=JSON.parse(localStorage.getItem(KEY)||"{}");
+function save(){localStorage.setItem(KEY,JSON.stringify(state));}
+function get(id){return !!state[id];}
+function set(id,v){state[id]=v;save();}
+
+const todayStr=(()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;})();
+
+/* ---------- render deliverables ---------- */
+const delivGrid=document.getElementById("delivGrid");
+DELIVERABLES.forEach((d,i)=>{
+  const id="deliv-"+i;
+  const el=document.createElement("div");
+  el.className="chip"+(get(id)?" on":"");
+  el.tabIndex=0;el.setAttribute("role","checkbox");el.setAttribute("aria-checked",get(id));
+  el.innerHTML=`<span class="num">${String(i+1).padStart(2,"0")}</span><span>${d}</span>`;
+  const toggle=()=>{set(id,!get(id));el.classList.toggle("on",get(id));el.setAttribute("aria-checked",get(id));updateProgress();};
+  el.addEventListener("click",toggle);
+  el.addEventListener("keydown",e=>{if(e.key===" "||e.key==="Enter"){e.preventDefault();toggle();}});
+  delivGrid.appendChild(el);
+});
+
+/* ---------- render days ---------- */
+const daysWrap=document.getElementById("days");
+let allTaskIds=[];
+DAYS.forEach((day,di)=>{
+  const status = day.date<todayStr?"past":(day.date===todayStr?"today":"future");
+  const isDday = day.tag==="D-DAY";
+  const card=document.createElement("article");
+  card.className="day "+status+(isDday?" dday":"")+(status==="past"?" collapsed":"");
+  card.id="day-"+day.date;
+  if(day.date===todayStr) card.classList.add("today"),card.id="today-anchor";
+
+  let tagClass="tag";
+  if(status==="today")tagClass+=" t-today";
+  if(isDday)tagClass+=" t-dday";
+
+  const [_,mm,dd]=day.date.split("-");
+  const head=document.createElement("div");
+  head.className="day-head";head.tabIndex=0;head.setAttribute("role","button");
+  head.innerHTML=`
+    <div class="date">${mm}/${dd}<small>${day.wd}요일</small></div>
+    <div class="day-title">${day.title}<span>${day.note}</span></div>
+    <span class="${tagClass}">${day.tag}</span>
+    <span class="ring" id="ring-${di}">0%</span>
+    <span class="caret">▼</span>`;
+  card.appendChild(head);
+
+  const body=document.createElement("div");body.className="day-body";
+  day.groups.forEach((g,gi)=>{
+    const grp=document.createElement("div");grp.className="blockgrp";
+    grp.innerHTML=`<p class="gh">${g.h}</p>`;
+    g.tasks.forEach((task,ti)=>{
+      const id=`d${di}-g${gi}-t${ti}`;allTaskIds.push(id);
+      const row=document.createElement("label");
+      row.className="task"+(get(id)?" done":"");
+      row.innerHTML=`<input type="checkbox" ${get(id)?"checked":""}>
+        <span class="txt">${task.t}</span>${task.m?`<span class="min">${task.m}'</span>`:""}`;
+      const cb=row.querySelector("input");
+      cb.addEventListener("change",()=>{set(id,cb.checked);row.classList.toggle("done",cb.checked);updateRing(di);updateProgress();});
+      grp.appendChild(row);
+    });
+    body.appendChild(grp);
+  });
+  card.appendChild(body);
+
+  head.addEventListener("click",()=>card.classList.toggle("collapsed"));
+  head.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();card.classList.toggle("collapsed");}});
+
+  daysWrap.appendChild(card);
+  card._taskIds=day.groups.flatMap((g,gi)=>g.tasks.map((t,ti)=>`d${di}-g${gi}-t${ti}`));
+  card._di=di;
+});
+
+function updateRing(di){
+  const card=document.getElementById("day-"+DAYS[di].date)||document.getElementById("today-anchor");
+  const ids=DAYS[di].groups.flatMap((g,gi)=>g.tasks.map((t,ti)=>`d${di}-g${gi}-t${ti}`));
+  const done=ids.filter(get).length;
+  const pct=ids.length?Math.round(done/ids.length*100):0;
+  const ring=document.getElementById("ring-"+di);
+  if(ring){ring.textContent=pct+"%";ring.style.color=pct===100?"var(--green-bright)":"var(--muted)";}
+}
+
+function updateProgress(){
+  const delivIds=DELIVERABLES.map((_,i)=>"deliv-"+i);
+  const allIds=allTaskIds.concat(delivIds);
+  const done=allIds.filter(get).length;
+  const pct=allIds.length?Math.round(done/allIds.length*100):0;
+  document.getElementById("pct").textContent=pct+"%";
+  document.getElementById("barFill").style.width=pct+"%";
+  const dc=delivIds.filter(get).length;
+  document.getElementById("delivCount").textContent=dc+" / 6";
+  DAYS.forEach((_,di)=>updateRing(di));
+}
+
+/* ---------- countdown ---------- */
+function tick(){
+  const now=new Date();
+  let diff=TARGET-now;
+  const numEl=document.getElementById("ddayNum");
+  const clk=document.getElementById("ddayClock");
+  if(diff<=0){numEl.textContent="D-DAY";clk.textContent="화이팅!";return;}
+  const dayMs=86400000;
+  const dleft=Math.ceil(diff/dayMs);
+  numEl.textContent="D-"+ (dleft);
+  const h=Math.floor(diff/3600000)%24;
+  const m=Math.floor(diff/60000)%60;
+  const s=Math.floor(diff/1000)%60;
+  // show total hours-ish remaining for the readout
+  const totalH=Math.floor(diff/3600000);
+  clk.textContent=`${totalH}h ${String(m).padStart(2,"0")}m ${String(s).padStart(2,"0")}s`;
+}
+setInterval(tick,1000);tick();
+
+/* ---------- toolbar ---------- */
+document.getElementById("goToday").addEventListener("click",()=>{
+  const el=document.getElementById("today-anchor")||document.getElementById("day-"+todayStr);
+  if(el){el.classList.remove("collapsed");el.scrollIntoView({block:"center"});}
+  else alert("오늘에 해당하는 날짜가 일정 범위(6/28~7/10) 밖이에요.");
+});
+document.getElementById("expandAll").addEventListener("click",()=>document.querySelectorAll(".day").forEach(d=>d.classList.remove("collapsed")));
+document.getElementById("collapseAll").addEventListener("click",()=>document.querySelectorAll(".day").forEach(d=>d.classList.add("collapsed")));
+document.getElementById("resetBtn").addEventListener("click",()=>{
+  if(confirm("모든 체크 기록을 지울까요? 되돌릴 수 없어요.")){
+    state={};save();location.reload();
+  }
+});
+
+updateProgress();
+</script>
+</body>
+</html>
