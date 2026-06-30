@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>삼성서울병원 1차면접 회복 차트 v3 · D-day 7/10</title>
+<title>삼성서울병원 1차면접 회복 차트 v5 · D-day 7/10</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/static/pretendard.css">
@@ -13,7 +13,7 @@
     --paper:#F5F8F6; --surface:#FFFFFF; --mint:#E6F2EC; --mint-deep:#D2E8DE;
     --green:#1B6B57; --green-bright:#2E9E80; --ink:#15241F; --muted:#5E726B;
     --line:#DCE7E2; --amber:#E0853A; --coral:#E0573F; --done:#9FB8AE;
-    --gold:#C99A3C;
+    --gold:#C99A3C; --blue:#5C7FA6; --plum:#8B5E83;
     --shadow:0 1px 2px rgba(21,36,31,.05),0 8px 24px -12px rgba(21,36,31,.18);
     --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
     --sans:'Pretendard',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
@@ -46,12 +46,9 @@
   .wrap{max-width:880px;margin:0 auto;padding:24px 20px 0;}
   .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--green);margin:0;}
 
-  /* 목표 선언 블록 */
-  .vow{
-    background:linear-gradient(135deg,var(--ink) 0%,#1f3a31 100%);
+  .vow{background:linear-gradient(135deg,var(--ink) 0%,#1f3a31 100%);
     border-radius:18px;padding:26px 24px;margin:14px 0 16px;
-    box-shadow:var(--shadow);position:relative;overflow:hidden;
-  }
+    box-shadow:var(--shadow);position:relative;overflow:hidden;}
   .vow::before{content:"";position:absolute;inset:0;
     background:radial-gradient(circle at 85% -10%, rgba(46,158,128,.35), transparent 55%);}
   .vow-label{font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;
@@ -59,17 +56,23 @@
   .vow-text{font-size:21px;font-weight:800;color:#fff;line-height:1.45;margin:0;letter-spacing:-.01em;position:relative;}
   .vow-text b{color:#7FE0C2;}
 
-  /* 동기부여 멘트 블록 */
-  .pep{
-    background:var(--surface);border:1px solid var(--mint-deep);border-radius:14px;
+  .pep{background:var(--surface);border:1px solid var(--mint-deep);border-radius:14px;
     padding:16px 18px;margin-bottom:24px;box-shadow:var(--shadow);
-    display:flex;align-items:center;gap:14px;cursor:pointer;user-select:none;
-    transition:border-color .2s;
-  }
+    display:flex;align-items:center;gap:14px;cursor:pointer;user-select:none;transition:border-color .2s;}
   .pep:hover{border-color:var(--green-bright);}
   .pep .icon{font-size:22px;flex:none;}
   .pep .pep-text{font-size:14.5px;font-weight:600;color:var(--ink);flex:1;line-height:1.5;}
   .pep .pep-refresh{font-family:var(--mono);font-size:10.5px;color:var(--muted);flex:none;white-space:nowrap;}
+
+  .track-legend{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;}
+  .tlc{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);
+    border:1px solid var(--line);border-radius:99px;padding:5px 11px;background:var(--surface);}
+  .tlc .dot{width:9px;height:9px;border-radius:50%;flex:none;}
+  .dot.per{background:var(--blue);}
+  .dot.sit{background:var(--gold);}
+  .dot.gh{background:var(--green-bright);}
+  .dot.case{background:var(--coral);}
+  .dot.asan{background:var(--plum);}
 
   .toolbar{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 24px;}
   .btn{font-family:var(--sans);font-size:13px;font-weight:600;cursor:pointer;
@@ -85,6 +88,7 @@
   .day.today{border-left-color:var(--amber);}
   .day.dday{border-left-color:var(--coral);}
   .day.past{opacity:.72;}
+  .day.lockday{box-shadow:var(--shadow),0 0 0 2px rgba(139,94,131,.25) inset;}
   .day-head{display:flex;align-items:center;gap:14px;padding:15px 18px;cursor:pointer;user-select:none;}
   .day-head:focus-visible{outline:2px solid var(--green);outline-offset:-2px;}
   .date{font-family:var(--mono);font-weight:700;font-size:15px;flex:none;min-width:74px;}
@@ -95,16 +99,21 @@
     padding:3px 8px;border-radius:7px;background:var(--mint);color:var(--green);flex:none;}
   .tag.t-today{background:#FBEBD9;color:var(--amber);}
   .tag.t-dday{background:#FBE0DA;color:var(--coral);}
+  .tag.t-lock{background:#F1E6EF;color:var(--plum);}
   .ring{font-family:var(--mono);font-size:12px;color:var(--muted);flex:none;min-width:42px;text-align:right;}
   .caret{flex:none;color:var(--muted);transition:transform .2s;font-size:12px;}
   .day.collapsed .caret{transform:rotate(-90deg);}
   .day.collapsed .day-body{display:none;}
 
   .day-body{padding:2px 18px 16px;}
-  .blockgrp{margin-top:10px;}
-  .blockgrp .gh{font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+  .blockgrp{margin-top:10px;border-left:3px solid var(--line);padding-left:12px;}
+  .blockgrp.per{border-left-color:var(--blue);}
+  .blockgrp.sit{border-left-color:var(--gold);}
+  .blockgrp.gh{border-left-color:var(--green-bright);}
+  .blockgrp.case{border-left-color:var(--coral);}
+  .blockgrp.asan{border-left-color:var(--plum);}
+  .blockgrp .gh-label{font-family:var(--mono);font-size:11px;letter-spacing:.08em;
     color:var(--green);text-transform:uppercase;margin:0 0 4px;display:flex;align-items:center;gap:8px;}
-  .blockgrp .gh::before{content:"";height:1px;width:14px;background:var(--green-bright);}
   .task{display:flex;gap:11px;align-items:flex-start;padding:8px 10px;border-radius:10px;
     cursor:pointer;transition:background .12s;}
   .task:hover{background:var(--mint);}
@@ -128,6 +137,10 @@
   .method{background:var(--surface);border:1px solid var(--line);border-radius:14px;
     padding:14px 18px;margin-bottom:20px;font-size:13px;color:var(--ink);box-shadow:var(--shadow);}
   .method b{color:var(--green);}
+  .method .row2{margin-top:6px;}
+  .lockbox{background:#FBF5FA;border:1px solid #E8D5E5;border-radius:14px;padding:14px 18px;
+    margin-bottom:20px;font-size:13px;color:var(--plum);box-shadow:var(--shadow);}
+  .lockbox b{color:var(--plum);}
 
   @media (max-width:560px){.dday .num{font-size:28px;}.vow-text{font-size:18px;}.date{min-width:64px;}}
   @media (prefers-reduced-motion:reduce){.ekg path{animation:none;stroke-dashoffset:0;}html{scroll-behavior:auto;}*{transition:none !important;}}
@@ -152,7 +165,7 @@
 </header>
 
 <main class="wrap">
-  <p class="eyebrow">Samsung Medical Center · 1차 면접 회복 차트 v3</p>
+  <p class="eyebrow">Samsung Medical Center · 1차 면접 회복 차트 v5</p>
 
   <div class="vow">
     <p class="vow-label">선언</p>
@@ -165,8 +178,21 @@
     <span class="pep-refresh">탭하면 변경 · 1시간마다 자동</span>
   </div>
 
+  <div class="track-legend">
+    <span class="tlc"><span class="dot per"></span>인성</span>
+    <span class="tlc"><span class="dot sit"></span>상황면접</span>
+    <span class="tlc"><span class="dot gh"></span>초록이·하양이</span>
+    <span class="tlc"><span class="dot case"></span>삼성case 기출</span>
+    <span class="tlc"><span class="dot asan"></span>아산 실전연습</span>
+  </div>
+
   <div class="method">
-    <b>암기 검증 방식</b> — 답을 가린 채 실제 면접처럼 입으로 말해보고, 막힘없이 말한 항목은 <b>X 표시 후 다음 회독부터 스킵</b>. 전부 X 될 때까지 반복 회독.
+    <b>공통 암기검증</b> — 전체 1회독 후, 다음 회독부터는 답을 가리고 실제 면접처럼 입으로 말해보기 → 막힘없이 말한 항목은 X 표시하고 다음부터 스킵 → X 안 된 것만 추려서 반복. 전부 X 될 때까지.
+    <div class="row2"><b>4트랙 동시 병행</b> — 인성 / 상황면접 / 초록이·하양이 / 삼성case 기출, 이 네 개를 7/1부터 매일 같이 진행. 트랙별 분량은 날마다 달라도 됨(한 트랙만 몰아서 X).</div>
+  </div>
+
+  <div class="lockbox">
+    <b>📌 7/6(월) 못박힌 규칙</b> — 그날까지 초록이·하양이·삼성case 기출이 어디까지 진행됐든 상관없이, <b>7/6부터 아산 실전연습을 무조건 시작</b>한다. 그 이후로는 아산이 메인 트랙이 되고, 나머지는 유지·약점보강 모드로 전환.
   </div>
 
   <div class="save-note" id="saveNote">
@@ -185,13 +211,12 @@
 </main>
 
 <footer>
-  <p>📌 실습은 7/1(수)까지. 카드화(수첩)는 6/30·7/1 저녁에 한정. 7/1 저녁 이후로는 책 직접 반복 회독으로 전환.</p>
-  <p>암기 방식: 답 가리고 말로 답변 → 막힘없으면 X → 다음 회독부터 그 항목 스킵. 전부 X 될 때까지 반복.</p>
-  <p>가정: 풀데이 8~10h(휴식 포함) · 수면 7~8h. 무리면 블록을 빼되 초록이/CASE대비집·자기소개 우선.</p>
+  <p>📌 7/1(수)은 08–16시 근무, 오전은 오후 집담회 단어공부로 면접 준비 불가 → 사실상 17시부터 시작.</p>
+  <p>평소 수면 6~8시간이지만 D-day 임박까지는 줄일 의향 있음 반영. 풀데이는 8~10h(휴식 포함) 기준.</p>
 </footer>
 
 <script>
-const TARGET = new Date(2026,6,10,13,50,0); // 2026-07-10 13:50
+const TARGET = new Date(2026,6,10,13,50,0);
 
 const PEP_QUOTES = [
   "사자는 토끼를 잡을 때도 최선을 다한다.",
@@ -213,13 +238,13 @@ const PEP_QUOTES = [
   "1회독은 배신해도 5회독은 배신하지 않는다.",
   "졸음은 적이 아니라 신호다 — 자세를 고쳐 앉고 한 문장만 소리 내어 말해보자.",
   "남들 쉴 때 한 줄 더 본 사람이 면접장에서 흔들리지 않는다.",
-  "지금 이 페이지가 너의 마지막 약점이 될 수도, 강점이 될 수도 있다."
+  "지금 이 페이지가 너의 마지막 약점이 될 수도, 강점이 될 수도 있다.",
+  "X 하나가 늘어날 때마다 면접장에서의 침묵이 하나씩 줄어든다.",
+  "네 트랙을 동시에 돌리는 지금이 제일 힘들다. 여기만 넘기면 단순해진다.",
+  "아산은 실전이다 — 여기서 막히는 게 면접장에서 막히는 것보다 백배 낫다."
 ];
 
-function pickPep(seed){
-  const idx = Math.abs(seed) % PEP_QUOTES.length;
-  return PEP_QUOTES[idx];
-}
+function pickPep(seed){const idx = Math.abs(seed) % PEP_QUOTES.length;return PEP_QUOTES[idx];}
 function refreshPep(){
   const seed = Date.now() ^ Math.floor(Math.random()*100000);
   document.getElementById("pepText").textContent = pickPep(seed);
@@ -229,114 +254,122 @@ document.getElementById("pepBlock").addEventListener("click", refreshPep);
 document.getElementById("pepBlock").addEventListener("keydown", e=>{
   if(e.key===" "||e.key==="Enter"){e.preventDefault();refreshPep();}
 });
-// 1시간마다 자동 변경
 setInterval(refreshPep, 60*60*1000);
-// 탭/창을 떠났다가 돌아오면 변경
-document.addEventListener("visibilitychange", ()=>{
-  if(document.visibilityState==="visible"){ refreshPep(); }
-});
+document.addEventListener("visibilitychange", ()=>{ if(document.visibilityState==="visible"){ refreshPep(); } });
 window.addEventListener("focus", refreshPep);
 
+/* type: per(인성) / sit(상황면접) / gh(초록이하양이) / case(삼성case기출) / asan(아산) */
 const DAYS = [
-  {date:"2026-06-30",wd:"화",tag:"실습일",title:"실습 08–16 · 저녁 ~4h (지금 19:44)",note:"오늘 저녁: 상황면접·인성면접 먼저 감 잡기",
+  {date:"2026-07-01",wd:"수",tag:"근무일",title:"08–16 근무 · 오전 집담회 단어공부 · 17시부터 시작",note:"사실상 저녁 ~5h · 4트랙 동시 시작",
    groups:[
-     {h:"낮 · 수첩(기존 카드)",tasks:[{t:"기존 카드 회전 암기",m:""}]},
-     {h:"오늘 저녁 (지금부터)",tasks:[
-       {t:"초록이 — 상황면접 파트 1회독 (답변 구조 파악용으로 가볍게)",m:"60"},
-       {t:"초록이 — 인성면접 파트 1회독 (질문 유형·답변 감 잡기, 내 경험 메모하며)",m:"60"},
-       {t:"CASE대비집 소화기계 파트 1회독 — 진단/중재/컴플레인 구조만 파악 (의심나는 부분 표시만, 검색은 나중에)",m:"60"},
-       {t:"자기소개+지원동기 초안 작성 → 소리내어 3회",m:"30"},
-     ]}]},
+     {type:"per",h:"인성 — ①경험정리+자기소개",tasks:[{t:"경험정리표 이어서 작성 + 자기소개 초안 다듬기",m:"35"}]},
+     {type:"sit",h:"상황면접 — 1일차: 전체 1회독",tasks:[{t:"상황면접 파트 처음부터 끝까지 1회독",m:"45"}]},
+     {type:"gh",h:"초록이·하양이 — 잔여진도",tasks:[
+       {t:"초록이 소화기계~ 이어서 정독",m:"60"},
+       {t:"하양이 같은 범위 정독 (병행)",m:"30"},
+     ]},
+     {type:"case",h:"삼성case 기출 — 1일차 시작",tasks:[{t:"완벽대비집 처음부터 1회독 시작 (구조 파악 + 의심나는 부분 표시)",m:"45"}]},
+   ]},
 
-  {date:"2026-07-01",wd:"수",tag:"실습 마지막날",title:"실습 08–16 · 저녁 ~4h",note:"카드화 마지막 날",
+  {date:"2026-07-02",wd:"목",tag:"풀데이",title:"풀데이 ~9h",note:"4트랙 병행 계속",
    groups:[
-     {h:"낮 · 수첩(기존 카드)",tasks:[{t:"기존 카드 회전 암기",m:""}]},
-     {h:"저녁 (카드화 마무리)",tasks:[
-       {t:"초록이 — 오늘까지 진도(소화기계) 1회독, 답변 가능한 건 가리고 말해보고 X 표시",m:"60"},
-       {t:"CASE대비집 신경계 파트 1회독 — 구조 파악 + 의심 표시",m:"60"},
-       {t:"장점/단점 각 1개 초안 + 에피소드 매칭",m:"45"},
-       {t:"갈등 경험(팀활동 중) 1개 정리",m:"30"},
+     {type:"per",h:"인성 — ①②",tasks:[
+       {t:"경험정리표 마무리",m:"25"},
+       {t:"빈출문제 답변 초안 — 소스1: 인적성300",m:"35"},
+     ]},
+     {type:"sit",h:"상황면접 — 2일차: 가리고 말하기+X치기",tasks:[{t:"전체 가리고 실전처럼 말해보기 → 막힘없으면 X",m:"50"}]},
+     {type:"gh",h:"초록이·하양이",tasks:[
+       {t:"초록이 신경계 정독",m:"60"},
+       {t:"하양이 신경계 정독 (병행)",m:"30"},
+     ]},
+     {type:"case",h:"삼성case 기출 — 1회독 계속",tasks:[{t:"다음 계통 이어서 1회독 + 의심나는 진단 검색 검증",m:"75"}]},
+   ]},
+
+  {date:"2026-07-03",wd:"금",tag:"풀데이",title:"풀데이 ~9h",note:"4트랙 병행 계속",
+   groups:[
+     {type:"per",h:"인성 — ②",tasks:[
+       {t:"빈출문제 답변 초안 — 소스2: 자소서 꼬리질문",m:"35"},
+       {t:"빈출문제 답변 초안 — 소스3: 초록이 인성파트 빈출질문",m:"35"},
+     ]},
+     {type:"sit",h:"상황면접 — 3일차: 어제 X 안 된 것만 반복",tasks:[{t:"X 못한 항목만 다시 말해보기 → X치기",m:"35"}]},
+     {type:"gh",h:"초록이·하양이",tasks:[
+       {t:"초록이 심혈관계 정독",m:"60"},
+       {t:"하양이 심혈관계 정독 (병행)",m:"30"},
+     ]},
+     {type:"case",h:"삼성case 기출 — 1회독 계속",tasks:[{t:"다음 계통 이어서 1회독 + 검증",m:"75"}]},
+   ]},
+
+  {date:"2026-07-04",wd:"토",tag:"풀데이",title:"풀데이 ~9h",note:"4트랙 병행 계속 (상황면접 마무리권)",
+   groups:[
+     {type:"per",h:"인성 — ③ 실전 시작",tasks:[{t:"3소스 예상문제 실제 답변해보기 시작 — 버벅이는 문항 표시",m:"60"}]},
+     {type:"sit",h:"상황면접 — 4일차: 잔여 X 반복",tasks:[{t:"여전히 X 안 된 것만 반복 (거의 전부 X 목표)",m:"25"}]},
+     {type:"gh",h:"초록이·하양이",tasks:[
+       {t:"초록이 호흡기계 정독",m:"60"},
+       {t:"하양이 호흡기계 정독 (병행)",m:"30"},
+     ]},
+     {type:"case",h:"삼성case 기출 — 1회독 계속",tasks:[{t:"다음 계통 이어서 1회독 + 검증",m:"75"}]},
+   ]},
+
+  {date:"2026-07-05",wd:"일",tag:"풀데이",title:"풀데이 ~9h",note:"내일부터 아산 강제투입 — 오늘 최대한 진도",
+   groups:[
+     {type:"per",h:"인성 — ③",tasks:[{t:"3소스 예상문제 계속 — 버벅인 문항만 추려서 반복",m:"50"}]},
+     {type:"sit",h:"상황면접",tasks:[{t:"잔여 X 빠르게 재확인 (감 유지)",m:"15"}]},
+     {type:"gh",h:"초록이·하양이",tasks:[
+       {t:"초록이 내분비·비뇨기계 정독",m:"75"},
+       {t:"하양이 같은 범위 정독 (병행)",m:"40"},
+     ]},
+     {type:"case",h:"삼성case 기출 — 1회독 최대한 진도",tasks:[{t:"남은 계통 최대한 1회독 진행 + 검증 (못 끝내도 OK, 다음 주 회독2에서 이어감)",m:"75"}]},
+   ]},
+
+  {date:"2026-07-06",wd:"월",tag:"아산 강제투입",title:"풀데이 ~9h · 아산 메인 트랙 전환",note:"진행상황 무관, 아산 무조건 시작",
+   groups:[
+     {type:"asan",h:"아산 실전연습 — 1일차 (필수)",tasks:[{t:"아산 실무진 케이스 처음부터 실전 풀이 (케이스당 충분히 시간 들여서)",m:"150"}]},
+     {type:"gh",h:"초록이·하양이 — 유지",tasks:[{t:"X 안 된 것만 약점 회독",m:"45"}]},
+     {type:"case",h:"삼성case 기출 — 유지/회독2",tasks:[{t:"가리고 말해보기 회독 (X치기) 또는 1회독 잔여분",m:"60"}]},
+     {type:"sit",h:"상황면접",tasks:[{t:"잔여 X 재확인",m:"15"}]},
+     {type:"per",h:"인성",tasks:[{t:"버벅인 문항 반복",m:"30"}]},
+   ]},
+
+  {date:"2026-07-07",wd:"화",tag:"아산",title:"풀데이 ~9h",note:"아산 계속",
+   groups:[
+     {type:"asan",h:"아산 실전연습 — 2일차",tasks:[{t:"아산 다음 분량 실전 풀이",m:"150"}]},
+     {type:"gh",h:"초록이·하양이 — 유지",tasks:[{t:"X 안 된 것만 약점 회독",m:"45"}]},
+     {type:"case",h:"삼성case 기출 — 회독 반복",tasks:[{t:"X 안 된 진단/중재만 반복",m:"60"}]},
+     {type:"sit",h:"상황면접",tasks:[{t:"잔여 X 재확인",m:"15"}]},
+     {type:"per",h:"인성",tasks:[{t:"버벅인 문항 반복 + 꼬리질문 대비",m:"30"}]},
+   ]},
+
+  {date:"2026-07-08",wd:"수",tag:"아산",title:"풀데이 ~9h",note:"아산 마무리 목표",
+   groups:[
+     {type:"asan",h:"아산 실전연습 — 3일차 (마무리)",tasks:[{t:"아산 나머지 전부 실전 풀이",m:"150"}]},
+     {type:"gh",h:"초록이·하양이 — 유지",tasks:[{t:"X 안 된 것만 약점 회독",m:"40"}]},
+     {type:"case",h:"삼성case 기출 — 회독 반복",tasks:[{t:"X 안 된 것만 반복",m:"60"}]},
+     {type:"sit",h:"상황면접",tasks:[{t:"잔여 X 재확인",m:"15"}]},
+     {type:"per",h:"인성",tasks:[{t:"버벅인 문항 반복",m:"30"}]},
+   ]},
+
+  {date:"2026-07-09",wd:"목",tag:"D-1",title:"D-1 ~6h · 일찍 취침",note:"새 자료 금지, 전 트랙 약점만 회전",
+   groups:[
+     {type:"case",h:"삼성case 기출 — 마지막 점검",tasks:[{t:"X 안 된 것만 빠르게 (거의 전부 X 목표)",m:"75"}]},
+     {type:"asan",h:"아산 — 못 끝냈으면 마무리",tasks:[{t:"아산 잔여분 가볍게 훑기",m:"45"}]},
+     {type:"gh",h:"초록이·하양이",tasks:[{t:"약점 카드만 회전",m:"30"}]},
+     {type:"sit",h:"상황면접",tasks:[{t:"전체 빠르게 1회 입으로 말해보기",m:"20"}]},
+     {type:"per",h:"인성",tasks:[
+       {t:"자기소개+지원동기+마지막할말 소리내어 최종 점검",m:"25"},
+       {t:"버벅였던 문항만 마지막 점검. 저녁엔 새 내용 금지, 23시 전 취침",m:"20"},
      ]}]},
-
-  {date:"2026-07-02",wd:"목",tag:"풀데이",title:"풀데이 ~9h",note:"실습 끝 — 본격 반복회독 + CASE 검증 시작",
-   groups:[{h:"블록",tasks:[
-     {t:"초록이 신경계 — 답 가리고 말해보기, X 표시하며 1회독",m:"90"},
-     {t:"하양이 신경계+심혈관 — 답 가리고 말해보기, X 표시",m:"60"},
-     {t:"CASE대비집 심혈관계 1회독 — 진단/중재 구조 파악 + 의심나는 부분 웹검색으로 검증",m:"90"},
-     {t:"인적성300 자기소개/지원동기/마지막할말 예시 훑고 내 버전 다듬기",m:"60"},
-     {t:"갈등 경험(개인 간) 1개 정리",m:"30"},
-   ]}]},
-
-  {date:"2026-07-03",wd:"금",tag:"풀데이",title:"풀데이 ~9h",note:"호흡기·내분비 + CASE 검증 계속",
-   groups:[{h:"블록",tasks:[
-     {t:"초록이 호흡기계+내분비계 — 가리고 말해보기, X 표시",m:"120"},
-     {t:"하양이 호흡기·내분비 — 가리고 말해보기, X 표시",m:"60"},
-     {t:"CASE대비집 호흡기·내분비 1회독 — 구조 파악 + 검색으로 검증",m:"90"},
-     {t:"아산 실무진 케이스 1~10번 — 모르는 개념 그 자리에서 초록이/하양이로 보강",m:"60"},
-     {t:"실패경험 1개 초안",m:"30"},
-   ]}]},
-
-  {date:"2026-07-04",wd:"토",tag:"풀데이",title:"풀데이 ~9h",note:"비뇨·근골격 + CASE 전 계통 검증 마무리",
-   groups:[{h:"블록",tasks:[
-     {t:"초록이 비뇨기계+근골격계 — 가리고 말해보기, X 표시",m:"120"},
-     {t:"하양이 비뇨·근골격 — 가리고 말해보기, X 표시",m:"60"},
-     {t:"CASE대비집 비뇨·근골격+나머지 계통 1회독 마무리 — 의심나는 부분 검색 검증 마무리",m:"90"},
-     {t:"아산 11~20번",m:"60"},
-     {t:"거짓말한 경험/슬펐던 경험 초안",m:"30"},
-   ]}]},
-
-  {date:"2026-07-05",wd:"일",tag:"풀데이",title:"풀데이 ~9h",note:"감각·응급 + 초록이 1회독 마무리",
-   groups:[{h:"블록",tasks:[
-     {t:"초록이 감각계+응급+남은 파트 — 가리고 말해보기, X 표시 (초록이 전체 1회독 마무리)",m:"120"},
-     {t:"하양이 나머지 전체 — 가리고 말해보기, X 표시 (하양이 1회독 마무리)",m:"90"},
-     {t:"CASE대비집 1회독 검증 끝난 부분 — 2회독 시작 (X 안 된 것만)",m:"75"},
-     {t:"아산 21~32번",m:"60"},
-     {t:"인적성300 빈출 인성질문 훑고 갈등/실패 경험 매칭 점검",m:"45"},
-   ]}]},
-
-  {date:"2026-07-06",wd:"월",tag:"풀데이",title:"풀데이 ~9h",note:"2회독: X 안 된 것만 추려서 다시",
-   groups:[{h:"블록",tasks:[
-     {t:"초록이 2회독 — 1회독에서 X 못 한 것만 다시 가리고 말해보기",m:"120"},
-     {t:"하양이 2회독 — X 못 한 것만",m:"75"},
-     {t:"CASE대비집 2회독 — X 못 한 진단/중재만 반복",m:"90"},
-     {t:"아산 33~44번",m:"60"},
-     {t:"자기소개+지원동기+마지막할말 최종 녹음 점검",m:"30"},
-   ]}]},
-
-  {date:"2026-07-07",wd:"화",tag:"풀데이",title:"풀데이 ~9h",note:"아산 마무리 + case 모의",
-   groups:[{h:"블록",tasks:[
-     {t:"아산 45~88번 마무리 — 부족 개념 모아서 초록이/하양이로 최종 보강",m:"150"},
-     {t:"초록이·CASE대비집 3회독 — 여전히 X 안 된 것만",m:"60"},
-     {t:"모의 case 3세트(5분 작성→3분 발표→컴플레인 응대→셀프 꼬리질문 5개)",m:"90"},
-     {t:"인성 모의: 갈등/실패/장단점 무작위 질문, 답 안 보고 즉답+꼬리질문",m:"60"},
-   ]}]},
-
-  {date:"2026-07-08",wd:"수",tag:"풀데이",title:"풀데이 ~9h · 통합 리허설",note:"시간 남으면 널스피팅",
-   groups:[{h:"블록",tasks:[
-     {t:"초록이+하양이 — 끝까지 X 안 된 약점만 회전",m:"90"},
-     {t:"CASE대비집 — 끝까지 X 안 된 진단/중재만 회전",m:"90"},
-     {t:"case 실전 모의 4세트(타이머 적용)",m:"90"},
-     {t:"인성 실전 모의 12문항 압박(꼬리질문 포함)",m:"75"},
-     {t:"(시간 남으면) 널스피팅 일부 — 실력 점검용",m:"60"},
-   ]}]},
-
-  {date:"2026-07-09",wd:"목",tag:"D-1",title:"D-1 ~6h · 일찍 취침",note:"새 내용 금지, 약점만 회전",
-   groups:[{h:"블록",tasks:[
-     {t:"오전: CASE대비집 끝까지 안 외워진 것만 빠르게 + 컴플레인 스크립트 입으로 말해보기",m:"120"},
-     {t:"오후: 자기소개·장단점·갈등·실패경험 입으로 말해보기 1회전 + 초록이/하양이 약점만",m:"120"},
-     {t:"저녁: 새 내용 절대 X. 가볍게 훑기만. 23시 전 취침",m:"60"},
-   ]}]},
 
   {date:"2026-07-10",wd:"금",tag:"D-DAY",title:"🎬 면접 13:50",note:"환자안전·근거·컴플레인 공감",
-   groups:[{h:"D-DAY",tasks:[
-     {t:"오전(~3h): 끝까지 약점이었던 것만 + 자기소개 가볍게 (새 거 X)",m:""},
-     {t:"점심 가볍게 → 일찍 이동",m:""},
-     {t:"대기 중: 1분 자기소개 + '왜 삼성' 한 번씩 속으로",m:""},
-     {t:"마인드셋: 정답 맞히기 아님 → 환자안전 우선순위 + 근거 + 컴플레인 공감·해결. 모르면 솔직히 + '확인 후 조치/보고' + 환자안전 먼저.",m:""},
-   ]}]},
+   groups:[
+     {type:"case",h:"D-DAY 직무",tasks:[{t:"오전: 삼성case 기출 X 안 됐던 것만 가볍게 (새 거 절대 X)",m:""}]},
+     {type:"sit",h:"D-DAY 상황면접",tasks:[{t:"잔여 X만 속으로 한번",m:""}]},
+     {type:"per",h:"D-DAY 인성",tasks:[
+       {t:"대기 중: 1분 자기소개 + '왜 삼성' 한 번씩 속으로",m:""},
+       {t:"마인드셋: 정답 맞히기 아님 → 환자안전 우선순위 + 근거 + 컴플레인 공감·해결. 모르면 솔직히 + '확인 후 조치/보고' + 환자안전 먼저.",m:""},
+     ]}]},
 ];
 
-const KEY="samsung-prep-v3";
+const KEY="samsung-prep-v5";
 function lsAvailable(){try{const t="_t";localStorage.setItem(t,t);localStorage.removeItem(t);return true;}catch(e){return false;}}
 let state={};
 const LS_OK=lsAvailable();
@@ -374,14 +407,16 @@ let allTaskIds=[];
 DAYS.forEach((day,di)=>{
   const status = day.date<todayStr?"past":(day.date===todayStr?"today":"future");
   const isDday = day.tag==="D-DAY";
+  const isLock = day.tag==="아산 강제투입";
   const card=document.createElement("article");
-  card.className="day "+status+(isDday?" dday":"")+(status==="past"?" collapsed":"");
+  card.className="day "+status+(isDday?" dday":"")+(isLock?" lockday":"")+(status==="past"?" collapsed":"");
   card.id="day-"+day.date;
   if(day.date===todayStr) card.classList.add("today"),card.id="today-anchor";
 
   let tagClass="tag";
   if(status==="today")tagClass+=" t-today";
   if(isDday)tagClass+=" t-dday";
+  if(isLock)tagClass+=" t-lock";
 
   const [_,mm,dd]=day.date.split("-");
   const head=document.createElement("div");
@@ -396,8 +431,8 @@ DAYS.forEach((day,di)=>{
 
   const body=document.createElement("div");body.className="day-body";
   day.groups.forEach((g,gi)=>{
-    const grp=document.createElement("div");grp.className="blockgrp";
-    grp.innerHTML=`<p class="gh">${g.h}</p>`;
+    const grp=document.createElement("div");grp.className="blockgrp "+(g.type||"");
+    grp.innerHTML=`<p class="gh-label">${g.h}</p>`;
     g.tasks.forEach((task,ti)=>{
       const id=`d${di}-g${gi}-t${ti}`;allTaskIds.push(id);
       const row=document.createElement("label");
