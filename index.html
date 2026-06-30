@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>삼성서울병원 1차면접 회복 차트 v5 · D-day 7/10</title>
+<title>삼성서울병원 1차면접 회복 차트 v6 · D-day 7/10</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/static/pretendard.css">
@@ -165,7 +165,7 @@
 </header>
 
 <main class="wrap">
-  <p class="eyebrow">Samsung Medical Center · 1차 면접 회복 차트 v5</p>
+  <p class="eyebrow">Samsung Medical Center · 1차 면접 회복 차트 v6</p>
 
   <div class="vow">
     <p class="vow-label">선언</p>
@@ -267,7 +267,7 @@ const DAYS = [
      {type:"sit",h:"상황면접 — 1일차: 전체 1회독",tasks:[{t:"상황면접 파트 처음부터 끝까지 1회독",m:"45"}]},
      {type:"gh",h:"초록이(잔여1회독: 내분비계~) · 하양이(0회독, 투약부터)",tasks:[
        {t:"초록이 내분비계 정독 (처음 읽는 파트)",m:"50"},
-       {t:"하양이 — 처음부터 시작: 01 투약 정독 (병행)",m:"40"},
+       {t:"하양이 — 처음부터: 01 투약 + 02 수혈 정독 (병행, 아는 내용 많으면 빠르게)",m:"60"},
      ]},
      {type:"case",h:"삼성case 기출 — 1일차 시작",tasks:[{t:"완벽대비집 처음부터 1회독 시작 (구조 파악 + 의심나는 부분 표시)",m:"45"}]},
    ]},
@@ -281,7 +281,7 @@ const DAYS = [
      {type:"sit",h:"상황면접 — 2일차: 가리고 말하기+X치기",tasks:[{t:"전체 가리고 실전처럼 말해보기 → 막힘없으면 X",m:"50"}]},
      {type:"gh",h:"초록이(잔여) · 하양이(이어서)",tasks:[
        {t:"초록이 비뇨기계 정독 (처음 읽는 파트)",m:"50"},
-       {t:"하양이 02 수혈 정독 (병행)",m:"35"},
+       {t:"하양이 03 감염 + 04 안전 정독 (병행)",m:"55"},
      ]},
      {type:"case",h:"삼성case 기출 — 1회독 계속",tasks:[{t:"다음 계통 이어서 1회독 + 의심나는 진단 검색 검증",m:"75"}]},
    ]},
@@ -295,7 +295,7 @@ const DAYS = [
      {type:"sit",h:"상황면접 — 3일차: 어제 X 안 된 것만 반복",tasks:[{t:"X 못한 항목만 다시 말해보기 → X치기",m:"35"}]},
      {type:"gh",h:"초록이(잔여) · 하양이(이어서)",tasks:[
        {t:"초록이 근골격계/생식기계/감각계 정독 (처음 읽는 파트)",m:"60"},
-       {t:"하양이 03 감염 정독 (병행)",m:"35"},
+       {t:"하양이 05 활력징후/산소화 + 06 영양 정독 (병행)",m:"55"},
      ]},
      {type:"case",h:"삼성case 기출 — 1회독 계속",tasks:[{t:"다음 계통 이어서 1회독 + 검증",m:"75"}]},
    ]},
@@ -306,7 +306,7 @@ const DAYS = [
      {type:"sit",h:"상황면접 — 4일차: 잔여 X 반복",tasks:[{t:"여전히 X 안 된 것만 반복 (거의 전부 X 목표)",m:"25"}]},
      {type:"gh",h:"초록이(잔여 마무리) · 하양이(이어서)",tasks:[
        {t:"초록이 응급/화상 + 성인간호 기타 정독 — 초록이 잔여 1회독 전부 완료",m:"60"},
-       {t:"하양이 04 안전 정독 (병행)",m:"35"},
+       {t:"하양이 07 배뇨 + 08 배변 + 09 검사/수술 정독 (병행)",m:"60"},
      ]},
      {type:"case",h:"삼성case 기출 — 1회독 계속",tasks:[{t:"다음 계통 이어서 1회독 + 검증",m:"75"}]},
    ]},
@@ -317,7 +317,7 @@ const DAYS = [
      {type:"sit",h:"상황면접",tasks:[{t:"잔여 X 빠르게 재확인 (감 유지)",m:"15"}]},
      {type:"gh",h:"초록이(★처음부터 회독 시작) · 하양이(이어서)",tasks:[
        {t:"초록이 — 기본간호 01 투약부터 가리고 면접처럼 말해보기 → X치기 시작",m:"75"},
-       {t:"하양이 05 활력징후/산소화 정독 (병행)",m:"40"},
+       {t:"하양이 10 간호과정/기록 + 11 기본간호 기타 정독 — 기본간호 전체 완주 (병행)",m:"55"},
      ]},
      {type:"case",h:"삼성case 기출 — 1회독 최대한 진도",tasks:[{t:"남은 계통 최대한 1회독 진행 + 검증 (못 끝내도 OK, 다음 주 회독2에서 이어감)",m:"75"}]},
    ]},
@@ -327,7 +327,7 @@ const DAYS = [
      {type:"asan",h:"아산 실전연습 — 1일차 (필수)",tasks:[{t:"아산 실무진 케이스 처음부터 실전 풀이 (케이스당 충분히 시간 들여서)",m:"150"}]},
      {type:"gh",h:"초록이(X치기 계속) · 하양이(진도 계속)",tasks:[
        {t:"초록이 X 안 된 것만 약점 회독",m:"30"},
-       {t:"하양이 06 영양 정독",m:"30"},
+       {t:"하양이 — 성인간호 시작: 01 호흡기계 + 02 심혈관계 정독",m:"55"},
      ]},
      {type:"case",h:"삼성case 기출 — 유지/회독2",tasks:[{t:"가리고 말해보기 회독 (X치기) 또는 1회독 잔여분",m:"60"}]},
      {type:"sit",h:"상황면접",tasks:[{t:"잔여 X 재확인",m:"15"}]},
@@ -339,7 +339,7 @@ const DAYS = [
      {type:"asan",h:"아산 실전연습 — 2일차",tasks:[{t:"아산 다음 분량 실전 풀이",m:"150"}]},
      {type:"gh",h:"초록이(X치기) · 하양이(진도)",tasks:[
        {t:"초록이 X 안 된 것만 약점 회독",m:"25"},
-       {t:"하양이 07 배뇨 + 08 배변 정독",m:"30"},
+       {t:"하양이 03 혈액계 + 04 신경계 정독",m:"55"},
      ]},
      {type:"sit",h:"상황면접",tasks:[{t:"잔여 X 재확인",m:"15"}]},
      {type:"per",h:"인성",tasks:[{t:"버벅인 문항 반복 + 꼬리질문 대비",m:"30"}]},
@@ -350,7 +350,7 @@ const DAYS = [
      {type:"asan",h:"아산 실전연습 — 3일차 (마무리)",tasks:[{t:"아산 나머지 전부 실전 풀이",m:"150"}]},
      {type:"gh",h:"초록이(X치기) · 하양이(진도)",tasks:[
        {t:"초록이 X 안 된 것만 약점 회독",m:"20"},
-       {t:"하양이 09 검사/수술 + 10 간호과정/기록 정독",m:"30"},
+       {t:"하양이 05 소화기계 + 06 내분비계 정독",m:"55"},
      ]},
      {type:"case",h:"삼성case 기출 — 회독 반복",tasks:[{t:"X 안 된 것만 반복",m:"60"}]},
      {type:"sit",h:"상황면접",tasks:[{t:"잔여 X 재확인",m:"15"}]},
@@ -381,7 +381,7 @@ const DAYS = [
      ]}]},
 ];
 
-const KEY="samsung-prep-v5";
+const KEY="samsung-prep-v6";
 function lsAvailable(){try{const t="_t";localStorage.setItem(t,t);localStorage.removeItem(t);return true;}catch(e){return false;}}
 let state={};
 const LS_OK=lsAvailable();
